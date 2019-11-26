@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fillit.h                                           :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eflorean <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 16:18:19 by eflorean          #+#    #+#             */
-/*   Updated: 2019/10/21 16:18:22 by eflorean         ###   ########.fr       */
+/*   Created: 2019/09/23 14:43:00 by eflorean          #+#    #+#             */
+/*   Updated: 2019/09/23 14:43:02 by eflorean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLIT_H
-# define FILLIT_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include <stdlib.h>
-# include "get_next_line.h"
-# include "libft/libft.h"
+# define BUFF_SIZE 16
+# include <fcntl.h>
+# include <limits.h>
+# include "libft.h"
+#include <stdio.h> // УБЕРИИИИ
 
-int		check_input(int fd);
-void	make_list(int fd);
-
-typedef struct  s_tetr
-{
-    size_t		h;
-	size_t		w;
-    long long int	t;
-    struct t_fd	*next;
-} 				t_tetr;
-
-t_tetr *new_item(char	tetrisine[4][5]);
+int				get_next_line(const int fd, char **line);
 
 #endif

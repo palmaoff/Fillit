@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "fillit.h"
+#include "../includes/fillit.h"
+#include "../includes/get_next_line.h"
 
-int	check_line(char *line)
+static	int	check_line(char *line)
 {
 	int i;
 
@@ -27,7 +27,7 @@ int	check_line(char *line)
 	return (1);
 }
 
-int	neighborhood(char t[4][5], int i, int j)
+static	int	neighborhood(char t[4][5], int i, int j)
 {
 	int count;
 
@@ -43,7 +43,7 @@ int	neighborhood(char t[4][5], int i, int j)
 	return (count);
 }
 
-int	check_matrix(char a[4][5])
+static	int	check_matrix(char a[4][5])
 {
 	int i;
 	int j;
@@ -81,19 +81,20 @@ int	check_input(int fd)
 	line = NULL;
 	while ((get_next_line(fd, &line)) > 0 && i)
 	{
-		if (i % 5 != 0 && (!(ft_strlen(line) == 4) || !check_line(line)))
+		if ((i % 5 != 0) && ((ft_strlen(line) != 4) || !(check_line(line))))
 			i = -1;
 		else if (i % 5 != 0)
 			ft_strcpy(tetrisine[i % 5 - 1], line);
-		else if (i % 5 == 0 && !(ft_strlen(line) == 0))
+		else if ((i % 5 == 0) && (ft_strlen(line) != 0))
 			i = -1;
-		else if (i % 5 == 0 && !check_matrix(tetrisine))
+		else if ((i % 5 == 0 && !check_matrix(tetrisine)) || i > 130)
 			i = -1;
 		i++;
 		free(line);
 	}
-	i = (!check_matrix(tetrisine) || i == 0) ? 0 : i;
+	i = (!check_matrix(tetrisine) || i == 0 || i > 130) ? 0 : i;
 	if (line)
 		free(line);
+	close(fd);
 	return (i == 0) ? 0 : 1;
 }

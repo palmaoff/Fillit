@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/fillit.h"
+#include "../includes/get_next_line.h"
 
 void	dup_fr(char **line, char *st)
 {
