@@ -12,15 +12,15 @@
 
 #include "../includes/fillit.h"
 
-static	int		ft_cellin(t_cell *tmp, t_cell *cell, int pos)
+static	int		ft_cellin(t_cell **tmp, t_cell *cell, int pos)
 {
-	while (tmp->d != NULL)
-		tmp = tmp->d;
-	tmp->d = ft_cellnew(cell->w, cell->h, cell->x, cell->y);
-	tmp->d->inc = 1;
-	tmp->d->pos = pos;
-	tmp->d->u = tmp;
-	tmp->d->col = tmp;
+	while ((*tmp)->d != NULL)
+		(*tmp) = (*tmp)->d;
+	(*tmp)->d = ft_cellnew(cell->w, cell->h, cell->x, cell->y);
+	(*tmp)->d->inc = 1;
+	(*tmp)->d->pos = pos;
+	(*tmp)->d->u = *tmp;
+	(*tmp)->d->col = *tmp;
 	return (1);
 }
 
@@ -39,7 +39,7 @@ void			inputting(t_cell **map, t_cell *cell, int dim)
 		if (cell->x == map[i]->x && cell->y == map[i]->y)
 		{
 			tmp = map[i];
-			ft_cellin(tmp, cell, pos);
+			ft_cellin(&tmp, cell, pos);
 			if (last != NULL)
 			{
 				last->r = tmp->d;
