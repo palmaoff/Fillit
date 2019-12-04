@@ -1,10 +1,18 @@
-//
-// Created by Emilee Florean on 25/11/2019.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eflorean <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/02 15:17:45 by eflorean          #+#    #+#             */
+/*   Updated: 2019/12/02 15:17:50 by eflorean         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/fillit.h"
 
-static void ft_freearea(char **area, int dim)
+void				ft_freearea(char **area, int dim)
 {
 	dim--;
 	while (dim >= 0)
@@ -15,38 +23,36 @@ static void ft_freearea(char **area, int dim)
 	free(area);
 }
 
-static	char	**ft_area(int dim)
+static char			**ft_area(int dim)
 {
-	int i;
-	char **area;
+	int		i;
+	char	**area;
 
 	i = 0;
 	area = (char **)malloc(dim * sizeof(char *));
 	while (i < dim)
 	{
-		*(area + i) = malloc(dim * sizeof(char) + 1);
+		*(area + i) = (char *)malloc((dim + 1) * sizeof(char));
+		*(*(area + i) + dim) = '\0';
 		ft_memset(area[i], '.', dim);
 		i++;
 	}
 	return (area);
 }
 
-void ft_print(t_cell **map, int dim)
+void				ft_print(t_cell **map, int dim)
 {
-	char **area;
-	t_cell *tmp;
-	int i;
+	char	**area;
+	t_cell	*tmp;
+	int		i;
 
 	area = ft_area(dim);
 	i = 1;
 	while (i <= dim * dim)
 	{
 		tmp = map[i]->d;
-		while (tmp != NULL)
-		{
-			*(*(area + tmp->x) + tmp->y) = 64 + tmp->pos;
-			tmp = tmp->d;
-		}
+		if (tmp != NULL)
+			*(*(area + tmp->y) + tmp->x) = (char)(64 + tmp->pos);
 		i++;
 	}
 	i = 0;

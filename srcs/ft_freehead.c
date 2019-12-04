@@ -1,6 +1,14 @@
-//
-// Created by Louvenia Oram on 12/11/2019.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_freehead.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: loram <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/03 00:12:49 by loram             #+#    #+#             */
+/*   Updated: 2019/12/03 00:13:30 by loram            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/fillit.h"
 
@@ -10,10 +18,9 @@ void				ft_freehead(t_cell *head)
 
 	while (head)
 	{
-		prev = head->l;
-		ft_freecell(head);
-		head = prev;
-		free(prev->r);
+		prev = head;
+		head = head->l;
+		ft_freecell(prev);
+		free(prev);
 	}
 }
-

@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_all.c                                      :+:      :+:    :+:   */
+/*   ft_check_heads_tetr_inc.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: loram <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/03 00:08:15 by loram             #+#    #+#             */
-/*   Updated: 2019/12/03 00:08:20 by loram            ###   ########.fr       */
+/*   Created: 2019/12/02 23:41:46 by loram             #+#    #+#             */
+/*   Updated: 2019/12/02 23:41:56 by loram            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
 
-void			ft_free_all(t_cell **map, int size)
+int					ft_check_heads_tetr_inc(t_cell *cell)
 {
-	int			i;
-	t_cell		*tmp_cell;
-	t_cell		*temp;
+	t_cell		*temp_head;
+	t_cell		*temp_cell;
 
-	i = size;
-	while (i > 0)
+	temp_cell = ft_find_first_cell(cell);
+	while (temp_cell)
 	{
-		if (map[i]->col)
-		{
-			tmp_cell = map[i]->col;
-			while (tmp_cell != map[i])
-			{
-				temp = tmp_cell;
-				tmp_cell = tmp_cell->col;
-				ft_freecell(temp);
-				free(temp);
-			}
-		}
-		i--;
+		temp_head = ft_get_hd_up(temp_cell);
+		if (temp_head->inc == 0)
+			return (1);
+		temp_cell = temp_cell->r;
 	}
-	ft_freehead(map[size]);
-	free(map);
+	return (0);
 }

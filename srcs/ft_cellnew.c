@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cellnew.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eflorean <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/02 15:11:00 by eflorean          #+#    #+#             */
+/*   Updated: 2019/12/02 15:11:08 by eflorean         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/fillit.h"
 
-t_cell				*ft_cellnew(uint8_t w, uint8_t h, uint8_t x,
-								uint8_t y)
+t_cell				*ft_cellnew(int w, int h, int x,
+								int y)
 {
 	t_cell		*new;
 
@@ -16,7 +27,6 @@ t_cell				*ft_cellnew(uint8_t w, uint8_t h, uint8_t x,
 	new->inc = 0;
 	new->l = NULL;
 	new->r = NULL;
-	new->u = NULL;
 	new->d = NULL;
 	new->col = NULL;
 	return (new);

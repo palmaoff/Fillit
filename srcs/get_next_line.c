@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fillit.h"
 #include "../includes/get_next_line.h"
 
 void	dup_fr(char **line, char *st)
@@ -23,9 +22,7 @@ void	dup_fr(char **line, char *st)
 char	*ft_static(char **line, char st[BUFF_SIZE + 1])
 {
 	char	*n;
-	char	*tmp;
 
-	tmp = NULL;
 	n = NULL;
 	if (st != NULL)
 	{

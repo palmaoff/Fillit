@@ -1,22 +1,32 @@
-//
-// Created by Louvenia Oram on 14/11/2019.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exclude_row.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: loram <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/03 00:06:32 by loram             #+#    #+#             */
+/*   Updated: 2019/12/03 00:06:37 by loram            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void			ft_exclude_row(t_cell *tetr)
+void			ft_exclude_row(t_cell *tetr, int inc)
 {
-	int 	i;
 	t_cell	*temp_cell;
+	t_cell	*temp;
+	int		i;
 
-	i = 0;
 	temp_cell = ft_find_first_cell(tetr);
+	i = 0;
 	while (i < 4)
 	{
-		if (temp_cell->d)
-			temp_cell->d->u = temp_cell->u;
-		temp_cell->u->d = temp_cell->d;
-		temp_cell->inc = 0;
+		temp = temp_cell->col;
+		while ((temp->inc < 254) && (temp->h != 0))
+			temp = temp->col;
+		temp->d = temp_cell->d;
+		temp_cell->inc = inc;
 		temp_cell = temp_cell->r;
 		i++;
 	}

@@ -1,38 +1,57 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eflorean <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/02 15:04:34 by eflorean          #+#    #+#             */
+/*   Updated: 2019/12/02 15:04:42 by eflorean         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/fillit.h"
 
-int main()
+static void				ft_search(t_cell *cell, int dim, int k)
 {
+	int			alg;
 	t_cell		**head;
-//	t_cell		*c1;
-	t_cell		*cell;
-	char		*filename;
-	int fd;
 
-//	head = create_header(5);
-//	c1 = ft_cellnew(3, 2, 3, 4);
-//	c1->pos = 1;
-//	test = ft_findhead(c1, head, 25);
-//	print_map(head, 5);
-//	printf("x: %d y: %d pos: %d\n", c1->x, c1->y, c1->pos);
-	filename = "/Users/eflorean/CLionProjects/fillit/input";
-	fd = open(filename, O_RDONLY);
-	if (!check_input(fd))
+	alg = 0;
+	head = NULL;
+	while (!alg)
 	{
-		printf("error\n");
+		if (head != NULL)
+			ft_free_all(head, (dim - 1) * (dim - 1));
+		head = ft_create_header(dim);
+		input(head, cell, dim, k);
+		alg = ft_alg(head[0], 1, k, head);
+		dim++;
+	}
+	ft_print(head, dim - 1);
+	ft_freelist(cell);
+	ft_free_all(head, (dim - 1) * (dim - 1));
+}
+
+int						main(int ac, char **av)
+{
+	t_cell		*cell;
+	int			k;
+	int			dim;
+	int			fd;
+
+	if (ac == 2)
+		fd = open(av[1], O_RDONLY);
+	else
+		fd = -1;
+	if (!(k = check_input(fd)))
+	{
+		ft_putstr("error\n");
 		return (0);
 	}
-	printf("OK\n");
-	fd = open(filename, O_RDONLY);
+	fd = open(av[1], O_RDONLY);
 	cell = make_list(fd);
-	close(fd);
-	head = ft_create_header(4);
-	input(head, cell, 4, 4);
-    print_map(head, 4);
-    ft_print(head, 4);
-//  print_cell(cell);
-//  ft_alg(head[0], 0, 4, head);
-//	print_map(head, 4);
+	dim = dim_make(k, cell);
+	ft_search(cell, dim, k);
 	return (0);
 }

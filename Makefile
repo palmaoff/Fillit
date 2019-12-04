@@ -10,48 +10,61 @@
 #                                                                              #
 #******************************************************************************#
 
-OBJ_DIR = obj
-SRC_PATH = srcs/fillit
-OBJ_PATH = $(OBJ_DIR)/fillit
-SRC_NAME += main.c
-OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
-CC = gcc
-LIBFT_PATH = srcs/libft/
-LIB_DIR = lib/
-LDFLAGS = -L$(LIB_DIR)
-LDLIBS = -lft
-CFLAGS = -Wall -Werror -Wextra
-CPPFLAGS = -Iincludes/
-DIR = $(OBJ_DIR) $(LIB_DIR) $(OBJ_PATH)
 NAME = fillit
 
-.PHONY : all clean fclean re
-export LIB_DIR
-export OBJ_DIR
+SRC =        srcs/check_input.c\
+              srcs/ft_cellnew.c\
+              srcs/get_next_line.c\
+              srcs/main.c\
+              srcs/tetrimino.c\
+              srcs/ft_freecell.c\
+              srcs/ft_freehead.c\
+              srcs/ft_find_first_cell.c\
+              srcs/ft_alg.c\
+              srcs/ft_exclude_row.c\
+              srcs/ft_get_hd_up.c\
+              srcs/ft_excl_all_h_and_r.c\
+              srcs/ft_inc_all_h_and_r.c\
+              srcs/ft_include_row.c\
+              srcs/inputting.c\
+              srcs/ft_input.c\
+              srcs/ft_create_header.c\
+              srcs/ft_free_all.c\
+              srcs/ft_check_heads_tetr_inc.c\
+              srcs/ft_freelist.c\
+              srcs/ft_print.c\
+              srcs/make_list.c\
+              srcs/dim_make.c
 
-all : $(DIR) $(NAME)
+OBJ = $(SRC:.c=.o)
 
-$(DIR) :
-	mkdir -p $@
+INC = -I includes
 
-$(NAME) : $(DIR) $(OBJ)
-	make -C $(LIBFT_PATH)
-	$(CC) $(LDFLAGS) $(LDLIBS) $(OBJ) -o $@
+LIBFT =	srcs/libft/libft.a
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+CC = gcc
 
-clean :
-	make -C $(LIBFT_PATH) $@
-	rm -f $(OBJ)
-	@rmdir $(OBJ_PATH) $(OBJ_DIR) 2> /dev/null || true
+FLAGS = -Wall -Wextra -Werror
 
-fclean :
-	make -C $(LIBFT_PATH) $@
-	rm -f $(OBJ)
-	rm -f $(NAME)
-	@rmdir $(OBJ_PATH) $(LIB_DIR) $(OBJ_DIR) 2> /dev/null || true
+all: $(NAME)
 
-re : fclean all
+$(NAME): $(LIBFT) $(OBJ) ./srcs/libft/*
+		@$(CC) $(FLAGS) $(OBJ) -o $(NAME) $(LIBFT)
+
+$(OBJ): %.o: %.c
+		@$(CC) $(FLAGS) -o $@ -c $<
+
+$(LIBFT):
+		@make -C ./srcs/libft/
+
+clean:
+		@rm -f $(OBJ)
+			@make clean -C ./srcs/libft/
+
+fclean: clean
+		@rm -f $(NAME)
+			@make fclean -C ./srcs/libft/
+
+re: fclean all
+
+.PHONY : all, re, clean, fclean

@@ -11,11 +11,10 @@
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
-#include "../includes/get_next_line.h"
 
-static	int	check_line(char *line)
+int				check_line(char *line)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (i < 4)
@@ -27,58 +26,39 @@ static	int	check_line(char *line)
 	return (1);
 }
 
-static	int	neighborhood(char t[4][5], int i, int j)
+static char		**make_matrix(void)
 {
-	int count;
+	char	**m;
+	size_t	i;
 
-	count = 0;
-	if (i > 0 && t[i - 1][j] == '#')
-		count++;
-	if (j > 0 && t[i][j - 1] == '#')
-		count++;
-	if (i < 3 && t[i + 1][j] == '#')
-		count++;
-	if (j < 3 && t[i][j + 1] == '#')
-		count++;
-	return (count);
-}
-
-static	int	check_matrix(char a[4][5])
-{
-	int i;
-	int j;
-	int sum;
-	int count;
-
-	j = 0;
 	i = 0;
-	sum = 0;
-	count = 0;
+	m = (char **)malloc(4 * sizeof(char *));
 	while (i < 4)
 	{
-		j = 0;
-		while (j < 4)
-		{
-			if (a[i][j] == '#')
-			{
-				sum += neighborhood(a, i, j);
-				count++;
-			}
-			j++;
-		}
+		*(m + i) = (char *)malloc(5 * sizeof(char));
+		ft_bzero(*(m + i), 5);
 		i++;
 	}
-	return (sum < 6 || count != 4) ? 0 : 1;
+	return (m);
 }
 
-int	check_input(int fd)
+static void		ft_clean_matrix(char **tetrisine)
 {
-	char	*line;
 	int		i;
-	char	tetrisine[4][5];
+
+	i = 0;
+	while (i < 4)
+	{
+		ft_bzero(tetrisine[i], 5);
+		i++;
+	}
+}
+
+static int		validation(char **tetrisine, int fd, char *line)
+{
+	int		i;
 
 	i = 1;
-	line = NULL;
 	while ((get_next_line(fd, &line)) > 0 && i)
 	{
 		if ((i % 5 != 0) && ((ft_strlen(line) != 4) || !(check_line(line))))
@@ -87,14 +67,29 @@ int	check_input(int fd)
 			ft_strcpy(tetrisine[i % 5 - 1], line);
 		else if ((i % 5 == 0) && (ft_strlen(line) != 0))
 			i = -1;
-		else if ((i % 5 == 0 && !check_matrix(tetrisine)) || i > 130)
+		else if (i % 5 == 0 && !check_matrix(tetrisine))
 			i = -1;
+		if (i % 5 == 0)
+			ft_clean_matrix(tetrisine);
 		i++;
 		free(line);
 	}
-	i = (!check_matrix(tetrisine) || i == 0 || i > 130) ? 0 : i;
-	if (line)
-		free(line);
+	free(line);
+	return (i);
+}
+
+int				check_input(int fd)
+{
+	char	*line;
+	int		i;
+	char	**tetrisine;
+
+	line = NULL;
+	tetrisine = make_matrix();
+	i = validation(tetrisine, fd, line);
+	if (fd > 0)
+		i = (!check_matrix(tetrisine) || i == 0 || i > 130) ? 0 : i;
+	ft_freearea(tetrisine, 4);
 	close(fd);
-	return (i == 0) ? 0 : 1;
+	return (i == 0) ? 0 : i / 5;
 }

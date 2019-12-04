@@ -1,22 +1,37 @@
-//
-// Created by Louvenia Oram on 14/11/2019.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_include_row.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: loram <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/03 00:19:29 by loram             #+#    #+#             */
+/*   Updated: 2019/12/03 00:19:41 by loram            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
+
+/*
+** inc = 254, if re-include, first value = 255
+*/
 
 void			ft_include_row(t_cell *tetr)
 {
-	int 	i;
 	t_cell	*temp_cell;
+	t_cell	*temp;
+	int		i;
 
-	i = 0;
 	temp_cell = ft_find_first_cell(tetr);
+	i = 0;
 	while (i < 4)
 	{
-		if (temp_cell->d)
-			temp_cell->d->u = temp_cell;
-		temp_cell->u->d = temp_cell;
-		temp_cell->inc = 1;
+		temp = temp_cell;
+		while ((temp->inc < 254) && (temp->h != 0))
+			temp = temp->col;
+		temp_cell->d = temp->d;
+		temp->d = temp_cell;
+		temp_cell->inc = 254;
 		temp_cell = temp_cell->r;
 		i++;
 	}
