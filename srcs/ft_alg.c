@@ -12,6 +12,22 @@
 
 #include "../includes/fillit.h"
 
+static int			is_enough_cells(t_cell *head0, int pos_num, int pos)
+{
+	t_cell		*temp;
+	int			i;
+
+	i = 0;
+	temp = head0->r;
+	while (temp != NULL)
+	{
+		if (temp->d)
+			i++;
+		temp = temp->r;
+	}
+	return (i >= ((pos - pos_num) * 4));
+}
+
 static void			heads_tetr_inc_sw(t_cell *cell, int sw)
 {
 	t_cell		*temp_head;
@@ -59,9 +75,8 @@ int					ft_alg(t_cell *head, int pos_num, int pos, t_cell **map)
 		while ((temp_cell != NULL) && (temp_cell->pos == pos_num))
 		{
 			ft_excl_all_h_and_r(map[0], temp_cell, pos_num);
-			if (pos_num == pos)
-				return (1);
-			if (ft_alg(map[0], pos_num + 1, pos, map))
+			if ((pos_num == pos) || (is_enough_cells(map[0], pos_num, pos)
+					&& (ft_alg(map[0], pos_num + 1, pos, map))))
 				return (1);
 			heads_tetr_inc_sw(temp_cell, 1);
 			ft_inc_all_h_and_r(map[0], temp_cell, pos_num);

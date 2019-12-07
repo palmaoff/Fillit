@@ -14,6 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # define BUFF_SIZE 16
+# define OPEN_MAX 2047
 # include <fcntl.h>
 # include <limits.h>
 # include "libft.h"

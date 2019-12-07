@@ -6,7 +6,7 @@
 /*   By: eflorean <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:04:34 by eflorean          #+#    #+#             */
-/*   Updated: 2019/12/02 15:04:42 by eflorean         ###   ########.fr       */
+/*   Updated: 2019/12/04 21:18:55 by eflorean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ int						main(int ac, char **av)
 	int			dim;
 	int			fd;
 
-	if (ac == 2)
-		fd = open(av[1], O_RDONLY);
-	else
-		fd = -1;
+	if (ac != 2)
+	{
+		ft_putstr("ussage:\t./fillit [filename]\n");
+		return (0);
+	}
+	fd = open(av[1], O_RDONLY);
 	if (!(k = check_input(fd)))
 	{
 		ft_putstr("error\n");
